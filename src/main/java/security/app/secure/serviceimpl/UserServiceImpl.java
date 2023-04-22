@@ -1,0 +1,87 @@
+package security.app.secure.serviceimpl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import security.app.secure.entity.Role;
+import security.app.secure.entity.SavingsAccount;
+import security.app.secure.entity.User;
+import security.app.secure.exception.ResourceNotFoundException;
+import security.app.secure.repository.RoleRepository;
+import security.app.secure.repository.UserRepository;
+import security.app.secure.service.UserService;
+
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private static int autoincreaseno=20203020;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    @Override
+    public User saveUser(User datauser) {
+        SavingsAccount savingsAccount = new SavingsAccount();
+        savingsAccount.setAccount_no(autono());
+        savingsAccount.setAccount_balance(new BigDecimal(0.00));
+
+        Role roles = roleRepository.findByName("ROLE_ADMIN").get();
+        datauser.setRoles(Collections.singleton(roles));
+
+        // set parent reference (user) in child entity(savingsAccount)
+        savingsAccount.setUser(datauser);
+        // set child reference (savingsAccount) in parent entity(user)
+        datauser.setSavingsAccount(savingsAccount);
+
+        datauser.setPassword(passwordEncoder.encode(datauser.getPassword()));
+
+        // Save Parent Reference (which will save the child as well)
+        userRepository.save(datauser);
+
+        return datauser;
+    }
+
+    @Override
+    public User updateUser(long id, User userdata) {
+        User existuser = userRepository.findById(id).orElse(null);
+
+        existuser.setUsername(userdata.getUsername());
+        existuser.setEmail(userdata.getEmail());
+        existuser.setName(userdata.getName());
+        existuser.setName(userdata.getPassword());
+
+        userRepository.save(existuser);
+        return existuser;
+    }
+
+    @Override
+    public User getUsersById(long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", "id"));
+    }
+
+    @Override
+    public List<User> getAllUser(){
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void deleteUser(long id){
+        userRepository.findById(id).orElse(null);
+        userRepository.deleteById(id);
+    }
+
+    public static int autono(){
+        return ++ autoincreaseno;
+    }
+}
