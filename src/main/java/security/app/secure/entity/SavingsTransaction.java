@@ -34,4 +34,5 @@ public class SavingsTransaction {
         this.status = status;
         this.type = type;
     }
+    //
 }
