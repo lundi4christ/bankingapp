@@ -24,5 +24,4 @@ public class SavingsTransController {
         savingsAccountService.debit(amount, id);
         return new ResponseEntity<>("amount debited successfully", HttpStatus.OK);
     }
-
 }

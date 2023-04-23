@@ -1,5 +1,6 @@
 package security.app.secure.tcontroller;
 
+import netscape.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import security.app.secure.repository.UserRepository;
 import security.app.secure.service.UserService;
 import security.app.secure.tdto.LoginDto;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -91,5 +92,15 @@ public class AuthController {
         userService.deleteUser(id);
         return new ResponseEntity<>("", HttpStatus.OK);
     }
+
+    @GetMapping("/resource")
+    public Map<String, Object> mapresource(User dusers, Principal principal){
+        User users = userRepository.findByUsername(dusers.getUsername()).orElse(null);
+        Map<String, Object> model = new HashMap<>();
+        model.put("username", users.getUsername());
+        model.put("email", users.getEmail());
+
+        return (Map<String, Object>) users;
+        }
 
 }

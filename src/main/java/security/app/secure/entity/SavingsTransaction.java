@@ -26,6 +26,10 @@ public class SavingsTransaction {
     private String status;
     private String type;
 
+    public SavingsTransaction(){
+
+    }
+
     public SavingsTransaction(Date transdate, String description, BigDecimal amount, BigDecimal balance, String status, String type){
         this.transdate = transdate;
         this.description = description;
