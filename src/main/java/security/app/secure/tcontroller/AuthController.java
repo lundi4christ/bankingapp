@@ -42,7 +42,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("signin")
-    public ResponseEntity<String> authenticateuser(@RequestBody LoginDto loginDto){
+    public ResponseEntity<String> authenticateuser(@RequestBody LoginDto loginDto) {
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
@@ -52,14 +52,14 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> saveUser (@RequestBody User datauser){
+    public ResponseEntity<?> saveUser(@RequestBody User datauser) {
         // add check for username exists in DB
-        if(userRepository.existsByUsername(datauser.getUsername())){
+        if (userRepository.existsByUsername(datauser.getUsername())) {
             return new ResponseEntity<>("Username already exist", HttpStatus.BAD_REQUEST);
         }
 
         // add check for email exist in DB
-        if(userRepository.existsByEmail(datauser.getEmail())){
+        if (userRepository.existsByEmail(datauser.getEmail())) {
             return new ResponseEntity<>("Email already exist", HttpStatus.BAD_REQUEST);
         }
         userService.saveUser(datauser);
@@ -69,38 +69,38 @@ public class AuthController {
     }
 
     @PutMapping("/updateuser/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userdata){
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userdata) {
         userService.updateUser(id, userdata);
-      return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     @GetMapping("/alluser")
-    public List<User>  listAllUser(){
+    public List<User> listAllUser() {
+
         return userService.getAllUser();
     }
 
     @GetMapping("/getuser/{id}")
-    public User getUserById(@PathVariable long id){
-    return userService.getUsersById(id);
+    public User getUserById(@PathVariable long id) {
+        return userService.getUsersById(id);
 //        return new ResponseEntity<User>(userService.getUsersById(id), HttpStatus.OK);
     }
 
 
     @DeleteMapping("/deleteuser/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable long id){
+    public ResponseEntity<String> deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 
     @GetMapping("/resource")
-    public Map<String, Object> mapresource(User dusers, Principal principal){
+    public Map<String, Object> mapresource(User dusers, Principal principal) {
         User users = userRepository.findByUsername(dusers.getUsername()).orElse(null);
         Map<String, Object> model = new HashMap<>();
         model.put("username", users.getUsername());
         model.put("email", users.getEmail());
 
         return (Map<String, Object>) users;
-        }
-
+    }
 }

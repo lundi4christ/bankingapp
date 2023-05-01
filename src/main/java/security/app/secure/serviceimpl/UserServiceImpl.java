@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static int autoincreaseno=20203020;
+    private static int autoincreaseno = 20203020;
 
     @Autowired
     private UserRepository userRepository;
@@ -71,17 +71,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUser(){
+    public List<User> getAllUser() {
         return userRepository.findAll();
     }
 
     @Override
-    public void deleteUser(long id){
+    public void deleteUser(long id) {
         userRepository.findById(id).orElse(null);
         userRepository.deleteById(id);
     }
 
-    public static int autono(){
-        return ++ autoincreaseno;
+    public static int autono() {
+        return ++autoincreaseno;
     }
 }

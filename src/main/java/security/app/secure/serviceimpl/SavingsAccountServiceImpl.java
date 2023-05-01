@@ -19,18 +19,17 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
     private SavingsAccountRepository savingsAccountRepository;
 
     @Override
-    public SavingsAccount deposit(Double depositamt, long id) {
+    public SavingsAccount deposit(BigDecimal depositamt, long id) {
 
         SavingsAccount getaccount = savingsAccountRepository.findById(id).orElse(null);
-
-        getaccount.setAccount_balance(getaccount.getAccount_balance().add(new BigDecimal(depositamt)));
+        getaccount.setAccount_balance(getaccount.getAccount_balance().add(new BigDecimal(String.valueOf(depositamt))));
 
         Date date = new Date();
 
         List<SavingsTransaction> savetranslist = new ArrayList<>();
 
-        SavingsTransaction saveTrans = new SavingsTransaction(date,"transaction", getaccount.getAccount_balance(),
-                getaccount.getAccount_balance(),"processed", "deposited");
+        SavingsTransaction saveTrans = new SavingsTransaction(date, "transaction", getaccount.getAccount_balance(),
+                getaccount.getAccount_balance(), "processed", "deposited");
         saveTrans.setSavingsAccount(getaccount);
         savetranslist.add(saveTrans);
         getaccount.setSavetransitems(savetranslist);
@@ -41,17 +40,17 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
     }
 
     @Override
-    public SavingsAccount debit(Double debitamt, long id) {
+    public SavingsAccount debit(BigDecimal debitamt, long id) {
         SavingsAccount getaccount = savingsAccountRepository.findById(id).orElse(null);
 
-        getaccount.setAccount_balance(getaccount.getAccount_balance().subtract(new BigDecimal(debitamt)));
+        getaccount.setAccount_balance(getaccount.getAccount_balance().subtract(new BigDecimal(String.valueOf(debitamt))));
 
         Date date = new Date();
 
         List<SavingsTransaction> savetranslist = new ArrayList<>();
 
-        SavingsTransaction saveTrans = new SavingsTransaction(date,"transaction", getaccount.getAccount_balance(),
-                getaccount.getAccount_balance(),"processed", "debited");
+        SavingsTransaction saveTrans = new SavingsTransaction(date, "transaction", getaccount.getAccount_balance(),
+                getaccount.getAccount_balance(), "processed", "debited");
         saveTrans.setSavingsAccount(getaccount);
         savetranslist.add(saveTrans);
         getaccount.setSavetransitems(savetranslist);
@@ -60,4 +59,48 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
         return getaccount;
     }
+
+    @Override
+    public SavingsAccount transferfund(long debitid, BigDecimal debitamt, long depositid) {
+
+        SavingsAccount getdebitaccount = savingsAccountRepository.findById(debitid).orElse(null);
+
+        getdebitaccount.setAccount_balance(getdebitaccount.getAccount_balance().subtract(new BigDecimal(String.valueOf(debitamt))));
+
+        Date date = new Date();
+
+        List<SavingsTransaction> savetranslist = new ArrayList<>();
+
+        SavingsTransaction saveTrans = new SavingsTransaction(date, "transaction", getdebitaccount.getAccount_balance(),
+                getdebitaccount.getAccount_balance(), "processed", "debited");
+        saveTrans.setSavingsAccount(getdebitaccount);
+        savetranslist.add(saveTrans);
+        getdebitaccount.setSavetransitems(savetranslist);
+
+        savingsAccountRepository.save(getdebitaccount);
+
+        //////////////////////////////////
+        SavingsAccount getdepositaccount = savingsAccountRepository.findById(depositid).orElse(null);
+        getdepositaccount.setAccount_balance(getdepositaccount.getAccount_balance().add(new BigDecimal(String.valueOf(debitamt))));
+
+        Date dates = new Date();
+
+        List<SavingsTransaction> savetranslists = new ArrayList<>();
+
+        SavingsTransaction saveTranss = new SavingsTransaction(dates, "transaction", getdepositaccount.getAccount_balance(),
+                getdepositaccount.getAccount_balance(), "processed", "deposited");
+        saveTranss.setSavingsAccount(getdepositaccount);
+        savetranslist.add(saveTranss);
+        getdepositaccount.setSavetransitems(savetranslists);
+
+        savingsAccountRepository.save(getdepositaccount);
+
+        return getdepositaccount;
+
+    }
+
+    /*public SavingsAccount findByAccountno(int account) {
+        return savingsAccountRepository.findSavingsAccountByAccount_no(account);
+    }*/
+
 }
