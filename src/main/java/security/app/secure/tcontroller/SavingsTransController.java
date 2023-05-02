@@ -40,16 +40,7 @@ public class SavingsTransController {
 
     @PutMapping("/transferamount/{debitid}/{debitamount}/{depositid}")
     public ResponseEntity<?> transfer(@PathVariable long debitid, @PathVariable BigDecimal debitamount, @PathVariable long depositid) {
-
         savingsAccountService.transferfund(debitid, debitamount, depositid);
-
-        /*savingsAccountService.debit(debitamount, userdebitid);
-
-        SavingsAccount savings = savingsAccountRepository.findById(userdebitid).orElse(null);
-        BigDecimal d = savings.getAccount_balance();
-        System.out.println("==========" + d);
-        savingsAccountService.deposit(d, userdepositid);*/
-
         return new ResponseEntity<>("Amount debited and deposited successfully", HttpStatus.OK);
     }
 

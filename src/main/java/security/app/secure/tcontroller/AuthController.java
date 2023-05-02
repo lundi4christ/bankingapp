@@ -100,6 +100,8 @@ public class AuthController {
         Map<String, Object> model = new HashMap<>();
         model.put("username", users.getUsername());
         model.put("email", users.getEmail());
+        model.put("name", users.getName());
+        model.put("account", users.getSavingsAccount());
 
         return (Map<String, Object>) users;
     }
