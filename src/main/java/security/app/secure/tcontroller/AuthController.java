@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import security.app.secure.entity.SavingsAccount;
 import security.app.secure.entity.User;
 import security.app.secure.repository.RoleRepository;
 import security.app.secure.repository.SavingsAccountRepository;
@@ -17,7 +18,9 @@ import security.app.secure.repository.UserRepository;
 import security.app.secure.service.UserService;
 import security.app.secure.tdto.LoginDto;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -104,5 +107,12 @@ public class AuthController {
         model.put("account", users.getSavingsAccount());
 
         return (Map<String, Object>) users;
+    }
+
+    @GetMapping("/getaccount")
+    public Map<String, Object> mapaccount(SavingsAccount accts){
+//        SavingsAccount savingsaccts = savingsAccountRepository.findOne(accts).orElse(null);
+
+        return (Map<String, Object>) mapaccount(accts);
     }
 }
