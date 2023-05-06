@@ -16,7 +16,12 @@ public class SavingsAccount {
     private Long id;
 
     private BigDecimal account_balance;
-    private int account_no;
+
+    @Column(name = "accountno")
+    private int accountno;
+
+    @Column(name="account", unique = true)
+    private String account;
 
     @OneToOne(mappedBy = "savingsAccount")
     private User user;

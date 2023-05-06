@@ -7,6 +7,11 @@ import security.app.secure.entity.SavingsAccount;
 @Repository
 public interface SavingsAccountRepository extends JpaRepository<SavingsAccount, Long> {
 
-//    SavingsAccount findSavingsAccountByAccount_no(int accountno);
+    SavingsAccount findSavingsAccountById(Long id);
+    SavingsAccount findSavingsAccountByAccount(String account);
+    SavingsAccount findSavingsAccountByAccountno(int accountno);
+
+    // this will fail because of the underscore
+//    SavingsAccount findSavingsAccountByAccount_balance(BigDecimal account_balance);
 
 }

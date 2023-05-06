@@ -38,9 +38,9 @@ public class SavingsTransController {
         return new ResponseEntity<>("amount debited successfully", HttpStatus.OK);
     }
 
-    @PutMapping("/transferamount/{debitid}/{debitamount}/{depositid}")
-    public ResponseEntity<?> transfer(@PathVariable long debitid, @PathVariable BigDecimal debitamount, @PathVariable long depositid) {
-        savingsAccountService.transferfund(debitid, debitamount, depositid);
+    @PutMapping("/transferamount/{debitaccount}/{debitamount}/{depositaccount}")
+    public ResponseEntity<?> transfer(@PathVariable int debitaccount, @PathVariable BigDecimal debitamount, @PathVariable int depositaccount) {
+        savingsAccountService.transferfund(debitaccount, debitamount, depositaccount);
         return new ResponseEntity<>("Amount debited and deposited successfully", HttpStatus.OK);
     }
 

@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static int autoincreaseno = 20203020;
+    private static int autoincreaseno = 202030205;
 
     @Autowired
     private UserRepository userRepository;
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveUser(User datauser) {
         SavingsAccount savingsAccount = new SavingsAccount();
-        savingsAccount.setAccount_no(autono());
+        savingsAccount.setAccountno(autono());
         savingsAccount.setAccount_balance(new BigDecimal(0.00));
 
         Role roles = roleRepository.findByName("ROLE_ADMIN").get();

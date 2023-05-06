@@ -10,9 +10,13 @@ public interface SavingsAccountService {
 
     SavingsAccount debit(BigDecimal debitamt, long id);
 
-    SavingsAccount transferfund(long debitid, BigDecimal debitamt, long depositid);
+    SavingsAccount transferfund(int debitaccount, BigDecimal debitamt, int depositaccount);
 
-//    SavingsAccount findByAcct(BigDecimal acct);
+    SavingsAccount findbyaccountbyid(Long id);
+
+    SavingsAccount findSavingsAccountByAccount (String account);
+
+    SavingsAccount findSavingsAccountByAccountno(int accountno);
 
    // long transfer(long id);
 
