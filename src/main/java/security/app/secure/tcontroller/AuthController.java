@@ -1,5 +1,6 @@
 package security.app.secure.tcontroller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import netscape.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import security.app.secure.entity.SavingsAccount;
 import security.app.secure.entity.User;
 import security.app.secure.repository.RoleRepository;
@@ -18,6 +20,7 @@ import security.app.secure.repository.UserRepository;
 import security.app.secure.service.UserService;
 import security.app.secure.tdto.LoginDto;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,11 +68,29 @@ public class AuthController {
         if (userRepository.existsByEmail(datauser.getEmail())) {
             return new ResponseEntity<>("Email already exist", HttpStatus.BAD_REQUEST);
         }
+        System.out.println("******** " + datauser);
         userService.saveUser(datauser);
 
         return new ResponseEntity<>("User Registered Successfully", HttpStatus.OK);
 
     }
+
+    @PostMapping("/uploadjson")
+        public ResponseEntity<?> saveJson(@RequestParam("file") MultipartFile file) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        User duser = mapper.readValue(file.getBytes(), User.class);
+            System.out.println("*************** " + duser);
+
+            if(userRepository.existsByUsername(duser.getUsername())){
+                return new ResponseEntity<>("username already exist", HttpStatus.BAD_REQUEST);
+            }
+            if(userRepository.existsByEmail(duser.getEmail())){
+                return new ResponseEntity<>("email already exist", HttpStatus.BAD_REQUEST);
+            }
+            userService.saveUser(duser);
+            return new ResponseEntity<>("User Registered Successfully", HttpStatus.OK);
+        }
+
 
     @PutMapping("/updateuser/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userdata) {
