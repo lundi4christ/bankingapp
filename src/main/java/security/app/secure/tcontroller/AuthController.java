@@ -75,6 +75,8 @@ public class AuthController {
 
     }
 
+    // to create a user using json file data // in postman using form-data and make sure the key is file: creatuser.json and a header
+    // content-type: multipart/form-data
     @PostMapping("/uploadjson")
         public ResponseEntity<?> saveJson(@RequestParam("file") MultipartFile file) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
