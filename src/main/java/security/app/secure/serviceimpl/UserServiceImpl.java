@@ -81,22 +81,43 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    public static int autono() {
-        return ++autoincreaseno;
-    }
-
+   // Assign roles to user
     @Override
-    public User assignRoleToUser(String username, String roleName){
+    public User assignRoleToUser(String username, String roleName) {
         User user = userRepository.findByUsername(username).orElse(null);
+        System.out.println("uuuuuuu " + user.getUsername());
         Role roles = roleRepository.findByName(roleName).orElse(null);
-
-        System.out.println ("uuuuuuuuuuuu " + username + " - "  + roleName);
+        System.out.println("rrrrrrrrrr " + roles.getName());
 
         if (user == null || roles == null){
             throw new IllegalArgumentException("User or Role not found");
         }
 
         user.getRoles().add(roles);
-        return userRepository.save(user);
+
+        userRepository.save(user);
+        return user;
     }
+
+    public static int autono() {
+        return ++autoincreaseno;
+    }
+
+   /* @Override
+    public User assignRoleToUser(String username, String roleName){
+        User user = userRepository.findByUsername(username).orElse(null);
+        System.out.println("uuuuuuu " + user);
+        Role roles = roleRepository.findByName(roleName).orElse(null);
+
+        System.out.println ("uuuuuuuuuuuu " + user + " - "  + roles);
+
+        if (user == null || roles == null){
+            throw new IllegalArgumentException("User or Role not found");
+        }
+
+        user.getRoles().add(roles);
+
+        userRepository.save(user);
+        return user;
+    }*/
 }

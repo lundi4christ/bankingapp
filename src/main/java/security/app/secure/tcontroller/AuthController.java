@@ -104,9 +104,9 @@ public class AuthController {
     public ResponseEntity<User> assignRoleToUser (@PathVariable String username, @PathVariable String roleName){
         System.out.println ("ddddddddd " + username + " - "  + roleName);
 
-        User updateuser = userService.assignRoleToUser(username, roleName);
+        userService.assignRoleToUser(username, roleName);
 
-        return new ResponseEntity<>(updateuser, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
@@ -125,7 +125,7 @@ public class AuthController {
     @DeleteMapping("/deleteuser/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
-        return new ResponseEntity<>("", HttpStatus.OK);
+        return new ResponseEntity<>("user deleted", HttpStatus.OK);
     }
 
     @GetMapping("/resource")
