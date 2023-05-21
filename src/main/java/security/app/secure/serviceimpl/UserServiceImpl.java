@@ -84,4 +84,19 @@ public class UserServiceImpl implements UserService {
     public static int autono() {
         return ++autoincreaseno;
     }
+
+    @Override
+    public User assignRoleToUser(String username, String roleName){
+        User user = userRepository.findByUsername(username).orElse(null);
+        Role roles = roleRepository.findByName(roleName).orElse(null);
+
+        System.out.println ("uuuuuuuuuuuu " + username + " - "  + roleName);
+
+        if (user == null || roles == null){
+            throw new IllegalArgumentException("User or Role not found");
+        }
+
+        user.getRoles().add(roles);
+        return userRepository.save(user);
+    }
 }

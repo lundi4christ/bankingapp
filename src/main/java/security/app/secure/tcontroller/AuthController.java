@@ -93,11 +93,20 @@ public class AuthController {
             return new ResponseEntity<>("User Registered Successfully", HttpStatus.OK);
         }
 
-
     @PutMapping("/updateuser/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userdata) {
         userService.updateUser(id, userdata);
         return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    @PostMapping("/{username}/roles/{roleName}")
+    public ResponseEntity<User> assignRoleToUser (@PathVariable String username, @PathVariable String roleName){
+        System.out.println ("ddddddddd " + username + " - "  + roleName);
+
+        User updateuser = userService.assignRoleToUser(username, roleName);
+
+        return new ResponseEntity<>(updateuser, HttpStatus.OK);
 
     }
 
