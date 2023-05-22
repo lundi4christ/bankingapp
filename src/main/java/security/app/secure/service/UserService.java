@@ -12,4 +12,5 @@ public interface UserService {
     List<User> getAllUser();
     void deleteUser(long id);
     User assignRoleToUser(String username, String roleName);
+    User unassignRoleToUser(String username, String roleName);
 }

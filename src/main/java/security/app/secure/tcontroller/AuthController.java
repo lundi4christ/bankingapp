@@ -100,7 +100,7 @@ public class AuthController {
 
     }
 
-    @PostMapping("/{username}/roles/{roleName}")
+    @PostMapping("/assignroletouser/{username}/roles/{roleName}")
     public ResponseEntity<User> assignRoleToUser (@PathVariable String username, @PathVariable String roleName){
         System.out.println ("ddddddddd " + username + " - "  + roleName);
 
@@ -108,6 +108,14 @@ public class AuthController {
 
         return new ResponseEntity<>(HttpStatus.OK);
 
+    }
+
+    @PostMapping("/unassignroletouser/{username}/roles/{roleName}")
+    public ResponseEntity<User> unassignRoleToUser(@PathVariable String username, @PathVariable String roleName){
+
+        userService.unassignRoleToUser(username, roleName);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/alluser")

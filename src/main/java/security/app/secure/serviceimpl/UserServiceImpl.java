@@ -95,29 +95,34 @@ public class UserServiceImpl implements UserService {
 
         user.getRoles().add(roles);
 
+        //user.getRoles().remove(roles);
+
         userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User unassignRoleToUser(String username, String roleName){
+
+        User user = userRepository.findByUsername(username).orElse(null);
+        System.out.println("uuuuuuuuu " + user.getUsername());
+        Role roles = roleRepository.findByName(roleName).orElse(null);
+        System.out.println("rrrrrrrrrr " + roles.getName());
+
+        if (user == null || roles == null){
+           throw new IllegalArgumentException("User or Role not Found");
+        }
+
+        user.getRoles().remove(roles);
+
+        userRepository.save(user);
+
         return user;
     }
 
     public static int autono() {
+
         return ++autoincreaseno;
     }
 
-   /* @Override
-    public User assignRoleToUser(String username, String roleName){
-        User user = userRepository.findByUsername(username).orElse(null);
-        System.out.println("uuuuuuu " + user);
-        Role roles = roleRepository.findByName(roleName).orElse(null);
-
-        System.out.println ("uuuuuuuuuuuu " + user + " - "  + roles);
-
-        if (user == null || roles == null){
-            throw new IllegalArgumentException("User or Role not found");
-        }
-
-        user.getRoles().add(roles);
-
-        userRepository.save(user);
-        return user;
-    }*/
 }
