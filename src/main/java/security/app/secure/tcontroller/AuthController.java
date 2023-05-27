@@ -3,14 +3,14 @@ package security.app.secure.tcontroller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import netscape.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import security.app.secure.entity.SavingsAccount;
 import security.app.secure.entity.User;
@@ -28,6 +28,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private UserService userService;
@@ -92,6 +95,17 @@ public class AuthController {
             userService.saveUser(duser);
             return new ResponseEntity<>("User Registered Successfully", HttpStatus.OK);
         }
+
+    @PostMapping("/senddata")
+    public ResponseEntity<String> sendData(@RequestBody User user){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<User> requestEntity = new HttpEntity<>(user, headers);
+
+       // ResponseEntity<API2Response> responseEntity = restTemplate.exchange();
+
+        return null;
+    }
 
     @PutMapping("/updateuser/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userdata) {

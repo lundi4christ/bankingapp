@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jaspernumbertowords:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/jaspernumbertowords_jar</output-path>
+    <root id="archive" name="jaspernumbertowords.jar">
+      <element id="module-output" name="jaspernumbertowords" />
+    </root>
+  </artifact>
+</component>
