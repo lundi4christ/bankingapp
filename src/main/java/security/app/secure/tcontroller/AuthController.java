@@ -106,7 +106,7 @@ public class AuthController {
         HttpEntity<User> requestEntity = new HttpEntity<>(user, headers);
 
         // send the request to an api
-        String targetUrl = "http://locahost:8181/processRequest";
+        String targetUrl = "http://localhost:8181/api/auth/processRequest";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Object> response = restTemplate.postForEntity(targetUrl, requestEntity, Object.class);
 
