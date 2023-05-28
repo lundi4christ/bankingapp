@@ -97,14 +97,22 @@ public class AuthController {
         }
 
     @PostMapping("/senddata")
-    public ResponseEntity<String> sendData(@RequestBody User user){
+    @ResponseBody
+    public ResponseEntity<Object> sendData(@RequestBody User user){
+        //prepare the request headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        //prepare the request body
         HttpEntity<User> requestEntity = new HttpEntity<>(user, headers);
 
-       // ResponseEntity<API2Response> responseEntity = restTemplate.exchange();
+        // send the request to an api
+        String targetUrl = "http://locahost:8181/processRequest";
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Object> response = restTemplate.postForEntity(targetUrl, requestEntity, Object.class);
 
-        return null;
+        System.out.println("rrrrrr " + response.getBody());
+
+        return response;
     }
 
     @PutMapping("/updateuser/{id}")
