@@ -166,6 +166,7 @@ public class AuthController {
         model.put("email", users.getEmail());
         model.put("name", users.getName());
         model.put("account", users.getSavingsAccount());
+        model.put("", users.getUsername());
 
         return (Map<String, Object>) users;
     }
