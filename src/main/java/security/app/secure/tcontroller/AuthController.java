@@ -3,6 +3,7 @@ package security.app.secure.tcontroller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import netscape.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,6 +50,12 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Value("${api.targeturl}")
+    private String targeturl;
+
+    @Value("${api.targeturlparam}")
+    private String targeturlparam;
 
     @PostMapping("signin")
     public ResponseEntity<String> authenticateuser(@RequestBody LoginDto loginDto) {
@@ -99,6 +106,9 @@ public class AuthController {
     @PostMapping("/senddata")
     @ResponseBody
     public ResponseEntity<Object> sendData(@RequestBody User user){
+
+        System.out.println("rrrrrr " + user.getUsername());
+
         //prepare the request headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -106,11 +116,27 @@ public class AuthController {
         HttpEntity<User> requestEntity = new HttpEntity<>(user, headers);
 
         // send the request to an api
-        String targetUrl = "http://localhost:8181/api/auth/processRequest";
+        //String targetUrl = "http://localhost:8181/api/auth/processRequest";
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Object> response = restTemplate.postForEntity(targetUrl, requestEntity, Object.class);
+        ResponseEntity<Object> response = restTemplate.postForEntity(targeturl, requestEntity, Object.class);
 
-        System.out.println("rrrrrr " + response.getBody());
+        System.out.println("request === " + requestEntity);
+
+        System.out.println("response === " + response.getBody());
+
+//        userService.saveUser(response);
+        return response;
+    }
+
+    @PostMapping("/sendparam/{name}")
+    @ResponseBody
+    public ResponseEntity<String> sendparam(@PathVariable String name){
+        System.out.println("==== name ==== " + name);
+        HttpHeaders header = new HttpHeaders();
+        HttpEntity<String> requestentity = new HttpEntity<>(header);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(targeturlparam + name,
+                HttpMethod.POST, requestentity, String.class);
 
         return response;
     }
