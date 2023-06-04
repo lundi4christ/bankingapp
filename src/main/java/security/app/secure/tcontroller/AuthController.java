@@ -1,5 +1,6 @@
 package security.app.secure.tcontroller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import netscape.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +131,7 @@ public class AuthController {
 
     @PostMapping("/sendparam/{name}")
     @ResponseBody
-    public ResponseEntity<String> sendparam(@PathVariable String name){
+    public ResponseEntity<String> sendparam(@PathVariable String name) throws JsonProcessingException {
         System.out.println("==== name ==== " + name);
         HttpHeaders header = new HttpHeaders();
         HttpEntity<String> requestentity = new HttpEntity<>(header);
@@ -138,7 +139,21 @@ public class AuthController {
         ResponseEntity<String> response = restTemplate.exchange(targeturlparam + name,
                 HttpMethod.POST, requestentity, String.class);
 
-        return response;
+        System.out.println("response ========= " + response.getBody());
+
+        ObjectMapper mapper = new ObjectMapper();
+        User duser = mapper.readValue(response.getBody(), User.class);
+
+        if(userRepository.existsByEmail(duser.getEmail())){
+            return new ResponseEntity<>("Email exist already", HttpStatus.OK);
+        }
+        if(userRepository.existsByUsername(duser.getUsername())){
+            return new ResponseEntity<>("Username exist already", HttpStatus.OK);
+        }
+        userService.saveUser(duser);
+
+       // return ResponseEntity.ok(response.getBody());
+        return new ResponseEntity<>("user created successfully", HttpStatus.OK);
     }
 
     @PutMapping("/updateuser/{id}")
