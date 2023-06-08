@@ -150,6 +150,7 @@ public class AuthController {
         if(userRepository.existsByUsername(duser.getUsername())){
             return new ResponseEntity<>("Username exist already", HttpStatus.OK);
         }
+
         userService.saveUser(duser);
 
        // return ResponseEntity.ok(response.getBody());
