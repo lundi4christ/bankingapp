@@ -28,8 +28,8 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
         List<SavingsTransaction> savetranslist = new ArrayList<>();
 
-        SavingsTransaction saveTrans = new SavingsTransaction(date, "transaction", getaccount.getAccount_balance(),
-                getaccount.getAccount_balance(), "processed", "deposited");
+        SavingsTransaction saveTrans = new SavingsTransaction(date, "Transaction", getaccount.getAccount_balance(),
+                getaccount.getAccount_balance(), "Processed", "Deposited");
         saveTrans.setSavingsAccount(getaccount);
         savetranslist.add(saveTrans);
         getaccount.setSavetransitems(savetranslist);
