@@ -29,6 +29,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
     @Autowired
@@ -116,7 +117,7 @@ public class AuthController {
         //prepare the request body
         HttpEntity<User> requestEntity = new HttpEntity<>(user, headers);
 
-        // send the request to an api
+        //// send the request to an api
         //String targetUrl = "http://localhost:8181/api/auth/processRequest";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Object> response = restTemplate.postForEntity(targeturl, requestEntity, Object.class);
@@ -125,7 +126,7 @@ public class AuthController {
 
         System.out.println("response === " + response.getBody());
 
-//        userService.saveUser(response);
+        /// userService.saveUser(response);
         return response;
     }
 
