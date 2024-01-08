@@ -201,6 +201,7 @@ public class AuthController {
         return new ResponseEntity<>("user deleted", HttpStatus.OK);
     }
 
+    // to use a profile as a session
     @GetMapping("/resource")
     public Map<String, Object> mapresource(User dusers, Principal principal) {
         User users = userRepository.findByUsername(dusers.getUsername()).orElse(null);
