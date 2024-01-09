@@ -201,7 +201,7 @@ public class AuthController {
         return new ResponseEntity<>("user deleted", HttpStatus.OK);
     }
 
-    // to use a profile as a session
+    // to use a profile as a sessions
     @GetMapping("/resource")
     public Map<String, Object> mapresource(User dusers, Principal principal) {
         User users = userRepository.findByUsername(dusers.getUsername()).orElse(null);
@@ -217,7 +217,7 @@ public class AuthController {
 
     @GetMapping("/getaccount")
     public Map<String, Object> mapaccount(SavingsAccount accts){
-//        SavingsAccount savingsaccts = savingsAccountRepository.findOne(accts).orElse(null);
+    // SavingsAccount savingsaccts = savingsAccountRepository.findOne(accts).orElse(null);
 
         return (Map<String, Object>) mapaccount(accts);
     }
