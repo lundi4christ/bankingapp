@@ -218,7 +218,6 @@ public class AuthController {
     @GetMapping("/getaccount")
     public Map<String, Object> mapaccount(SavingsAccount accts){
     // SavingsAccount savingsaccts = savingsAccountRepository.findOne(accts).orElse(null);
-
         return (Map<String, Object>) mapaccount(accts);
     }
 }
