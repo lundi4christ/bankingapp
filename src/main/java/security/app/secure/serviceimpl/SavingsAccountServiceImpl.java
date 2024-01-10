@@ -114,6 +114,16 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
         return savingsAccountRepository.findSavingsAccountByAccountno(accountno);
     }
 
+    @Override
+    public SavingsAccount checkbalance(long id){
+
+        SavingsAccount getid = savingsAccountRepository.findSavingsAccountById(id);
+
+        System.out.println("this is the account balance -----" + getid.getAccount_balance());
+
+        return getid;
+    }
+
     /*public SavingsAccount findByAccountno(int account) {
         return savingsAccountRepository.findSavingsAccountByAccount_no(account);
     }*/

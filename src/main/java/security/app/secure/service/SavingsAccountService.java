@@ -12,6 +12,8 @@ public interface SavingsAccountService {
 
     SavingsAccount transferfund(int debitaccount, BigDecimal debitamt, int depositaccount);
 
+    SavingsAccount checkbalance (long id);
+
     SavingsAccount findbyaccountbyid(Long id);
 
     SavingsAccount findSavingsAccountByAccount (String account);
