@@ -47,5 +47,5 @@ public class SavingsTransController {
         return new ResponseEntity<>("this is the balance", HttpStatus.OK);
     }
 
-    // using jwt to process transaction /////
+    // using jwt to process transaction ////////
 }
