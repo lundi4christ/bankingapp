@@ -23,7 +23,9 @@ public class SavingsAccount {
     @Column(name="account", unique = true)
     private String account;
 
-    @OneToOne(mappedBy = "savingsAccount")
+//    @OneToOne(mappedBy = "savingsAccount")
+    @OneToOne
+    @JoinColumn(name="user_id")
     private User user;
 
     @OneToMany(mappedBy = "savingsAccount", cascade = CascadeType.ALL)
