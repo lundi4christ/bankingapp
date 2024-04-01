@@ -60,13 +60,16 @@ public class AuthController {
     private String targeturlparam;
 
     @PostMapping("signin")
-    public ResponseEntity<String> authenticateuser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<String> authenticateuser(@RequestBody LoginDto loginDto) throws JsonProcessingException {
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User sign-in Successfully", HttpStatus.OK);
+        String getres = "username is - " + loginDto.getUsernameOrEmail();
+        ObjectMapper mapper = new ObjectMapper();
+        String res = mapper.writeValueAsString(getres);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @PostMapping("/signup")
