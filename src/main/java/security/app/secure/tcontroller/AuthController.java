@@ -2,18 +2,21 @@ package security.app.secure.tcontroller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import netscape.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import security.app.secure.asecurity.JwtTokenUtil;
+import security.app.secure.entity.ApiResponse;
 import security.app.secure.entity.SavingsAccount;
 import security.app.secure.entity.User;
 import security.app.secure.repository.RoleRepository;
@@ -23,6 +26,7 @@ import security.app.secure.service.UserService;
 import security.app.secure.tdto.LoginDto;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +57,9 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     @Value("${api.targeturl}")
     private String targeturl;
 
@@ -66,10 +73,30 @@ public class AuthController {
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String getres = "username is - " + loginDto.getUsernameOrEmail();
+        // Generate JWT token
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String token = jwtTokenUtil.generateToken(userDetails);
+        ObjectMapper mapper = new ObjectMapper();
+/*        LoginDto loginDto1 = new LoginDto();
+        loginDto1.setUsernameOrEmail(loginDto.getUsernameOrEmail());
+        loginDto1.setPassword(loginDto.getPassword());
+        loginDto1.setToken(token);*/
+
+        ApiResponse response = new ApiResponse();
+        response.setId(1L);
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage(HttpStatus.OK.value());
+        response.setResult(token);
+
+        String res = mapper.writeValueAsString(response);
+
+        // Return the JWT token as a response
+        return new ResponseEntity<>(res, HttpStatus.OK);
+
+        /*String getres = "username is - " + loginDto.getUsernameOrEmail();
         ObjectMapper mapper = new ObjectMapper();
         String res = mapper.writeValueAsString(getres);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity<>(res, HttpStatus.OK);*/
     }
 
     @PostMapping("/signup")
@@ -204,18 +231,27 @@ public class AuthController {
         return new ResponseEntity<>("user deleted", HttpStatus.OK);
     }
 
+    @GetMapping("/details")
+    public ResponseEntity<UserDetails> getUserDet(@CurrentSecurityContext Principal user){
+        System.out.println("**********user ********* " + user.getName());
+        UserDetails username = userService.getUserDetails(user.getName());
+        System.out.println("********THE USERNAME ***** " + username);
+        return ResponseEntity.ok(userService.getUserDetails(user.getName()));
+    }
+
     // to use a profile as a sessions
     @GetMapping("/resource")
-    public Map<String, Object> mapresource(User dusers, Principal principal) {
-        User users = userRepository.findByUsername(dusers.getUsername()).orElse(null);
+    public Map<String, Object> mapresource(User user, Principal principal) {
+        System.out.println("*****************USERNAME ****** " + principal.getName());
+//        User users = userRepository.findByUsername(principal.getName()).orElse(null);
         Map<String, Object> model = new HashMap<>();
-        model.put("username", users.getUsername());
-        model.put("email", users.getEmail());
-        model.put("name", users.getName());
-        model.put("account", users.getSavingsAccount());
-        model.put("", users.getUsername());
+/*        model.put("username", users.getUsername());
+        model.put("email", users.getEmail());*/
+        model.put("name", "Julius-Mark");
+/*        model.put("account", users.getSavingsAccount());
+        model.put("", users.getUsername());*/
 
-        return (Map<String, Object>) users;
+        return model;
     }
 
     @GetMapping("/getaccount")
