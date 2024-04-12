@@ -25,6 +25,7 @@ public class SavingsTransController {
 
     @PutMapping("/deposit/{id}/{amount}")
     public ResponseEntity<?> deposit(@PathVariable long id, @PathVariable BigDecimal amount) {
+        System.out.println("amt and id *********** " + id + " - " + amount);
         savingsAccountService.deposit(amount, id);
         return new ResponseEntity<>("Amount deposited successfully", HttpStatus.OK);
     }

@@ -22,6 +22,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
     public SavingsAccount deposit(BigDecimal depositamt, long id) {
 
         SavingsAccount getaccount = savingsAccountRepository.findById(id).orElse(null);
+        System.out.println("******** account-bal " + getaccount);
         getaccount.setAccount_balance(getaccount.getAccount_balance().add(new BigDecimal(String.valueOf(depositamt))));
 
         Date date = new Date();

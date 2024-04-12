@@ -253,8 +253,9 @@ public class AuthController {
         model.put("username", users.getUsername());
         model.put("email", users.getEmail());
         model.put("name", users.getName());
-        model.put("account", users.getSavingsAccount());
-//        model.put("account_balance", users.getSavingsAccount().getAccount_balance());
+        model.put("account", users.getSavingsAccount().getAccountno());
+//       System.out.println("accountss***** " + users.getSavingsAccount().getAccountno());
+       model.put("account_balance", users.getSavingsAccount().getAccount_balance());
 //        model.put("", users.getUsername());
 
         return model;
