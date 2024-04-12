@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 @Configuration
-@EnableMethodSecurity
+@EnableWebSecurity
 public class SecurityConfig {
 
     private UserDetailsService userDetailsService;
@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
                         authorize.antMatchers(HttpMethod.GET, "/api/**").permitAll()
+                                .antMatchers("/token/generate-token").permitAll()
                                 .antMatchers("/api/auth/**").permitAll()
                                 .antMatchers("/api/trans/**").permitAll()
                                 .anyRequest().authenticated())

@@ -28,7 +28,7 @@ public class User {
 
     /* @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "savings_acct_id")*/
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private SavingsAccount savingsAccount;
 
 }

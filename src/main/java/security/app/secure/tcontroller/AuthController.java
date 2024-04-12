@@ -8,7 +8,6 @@ import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -66,18 +65,24 @@ public class AuthController {
     @Value("${api.targeturlparam}")
     private String targeturlparam;
 
-    @PostMapping("signin")
-    public ResponseEntity<String> authenticateuser(@RequestBody LoginDto loginDto) throws JsonProcessingException {
+    private String token;
 
+    private String username;
+
+    @PostMapping("signin")
+    public ResponseEntity<ApiResponse> authenticateuser(@RequestBody LoginDto loginDto) throws JsonProcessingException {
+        username = loginDto.getUsernameOrEmail();
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // Generate JWT token
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String token = jwtTokenUtil.generateToken(userDetails);
-        ObjectMapper mapper = new ObjectMapper();
-/*        LoginDto loginDto1 = new LoginDto();
+        token = jwtTokenUtil.generateToken(userDetails);
+        String b = jwtTokenUtil.getUsernameFromToken(token);
+        System.out.println("******* token user *** " + b);
+/*        ObjectMapper mapper = new ObjectMapper();
+        LoginDto loginDto1 = new LoginDto();
         loginDto1.setUsernameOrEmail(loginDto.getUsernameOrEmail());
         loginDto1.setPassword(loginDto.getPassword());
         loginDto1.setToken(token);*/
@@ -88,10 +93,10 @@ public class AuthController {
         response.setMessage(HttpStatus.OK.value());
         response.setResult(token);
 
-        String res = mapper.writeValueAsString(response);
+       // String res = mapper.writeValueAsString(response);
 
         // Return the JWT token as a response
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return  ResponseEntity.ok(response);
 
         /*String getres = "username is - " + loginDto.getUsernameOrEmail();
         ObjectMapper mapper = new ObjectMapper();
@@ -232,24 +237,25 @@ public class AuthController {
     }
 
     @GetMapping("/details")
-    public ResponseEntity<UserDetails> getUserDet(@CurrentSecurityContext Principal user){
-        System.out.println("**********user ********* " + user.getName());
-        UserDetails username = userService.getUserDetails(user.getName());
-        System.out.println("********THE USERNAME ***** " + username);
-        return ResponseEntity.ok(userService.getUserDetails(user.getName()));
+    public User getUserDetails(Principal userPrincipal) {
+        // Extract user details from UserPrincipal and return
+        System.out.println("******principal *** " + userPrincipal.getName());
+        return null;
     }
 
     // to use a profile as a sessions
     @GetMapping("/resource")
-    public Map<String, Object> mapresource(User user, Principal principal) {
-        System.out.println("*****************USERNAME ****** " + principal.getName());
-//        User users = userRepository.findByUsername(principal.getName()).orElse(null);
+    public Map<String, Object> mapresource() {
+        String gettoken = jwtTokenUtil.getUsernameFromToken(token);
+        System.out.println("*****************USERNAME ****** " + gettoken + " - " + username);
+        User users = userRepository.findByUsername(username).orElse(null);
         Map<String, Object> model = new HashMap<>();
-/*        model.put("username", users.getUsername());
-        model.put("email", users.getEmail());*/
-        model.put("name", "Julius-Mark");
-/*        model.put("account", users.getSavingsAccount());
-        model.put("", users.getUsername());*/
+        model.put("username", users.getUsername());
+        model.put("email", users.getEmail());
+        model.put("name", users.getName());
+        model.put("account", users.getSavingsAccount());
+//        model.put("account_balance", users.getSavingsAccount().getAccount_balance());
+//        model.put("", users.getUsername());
 
         return model;
     }

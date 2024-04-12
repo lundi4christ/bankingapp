@@ -39,12 +39,12 @@ public class JwtTokenUtil {
     }
 
     // For retrieving any information from token we will need the secret key
-/*    private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-    }*/
-
     private Claims getAllClaimsFromToken(String token) {
-        return getAllClaimsFromToken(token);
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     // Check if the token has expired
