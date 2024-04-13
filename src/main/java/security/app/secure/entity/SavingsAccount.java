@@ -30,12 +30,12 @@ public class SavingsAccount {
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "savingsAccount", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "savingsAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     //@JoinColumn(name = "save_trans_id")
     private List<SavingsTransaction> savetransitems;
 
 
-    @Override
+   /* @Override
     public String toString() {
         return "SavingsAccount{" +
                 "id=" +
@@ -45,5 +45,5 @@ public class SavingsAccount {
                 ", user="  +
                 ", savetransitems="  +
                 '}';
-    }
+    }*/
 }

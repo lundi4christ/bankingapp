@@ -23,7 +23,7 @@ public class User {
     private String password;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -31,12 +31,12 @@ public class User {
 
     /* @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "savings_acct_id")*/
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private SavingsAccount savingsAccount;
 
 
-    @Override
+  /*  @Override
     public String toString() {
         return "User{" +
                 "id="  +
@@ -48,6 +48,6 @@ public class User {
                 ", savingsAccount="  +
                 '}';
     }
-
+*/
 
 }

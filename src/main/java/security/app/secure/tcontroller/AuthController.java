@@ -23,6 +23,7 @@ import security.app.secure.repository.SavingsAccountRepository;
 import security.app.secure.repository.UserRepository;
 import security.app.secure.service.UserService;
 import security.app.secure.tdto.LoginDto;
+import security.app.secure.tdto.UserDto;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -219,14 +220,14 @@ public class AuthController {
     }
 
     @GetMapping("/alluser")
-    public List<User> listAllUser() {
+    public List<UserDto> listAllUser() {
 
-        return userService.getAllUser();
+        return userService.findByUserDto();
     }
 
     @GetMapping("/getuser/{id}")
-    public User getUserById(@PathVariable long id) {
-        return userService.getUsersById(id);
+    public UserDto getUserById(@PathVariable long id) {
+        return userService.findByUserDtoId(id);
 //        return new ResponseEntity<User>(userService.getUsersById(id), HttpStatus.OK);
     }
 

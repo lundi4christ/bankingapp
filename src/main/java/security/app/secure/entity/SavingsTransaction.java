@@ -15,7 +15,7 @@ public class SavingsTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "savingsaccount_id")
     private SavingsAccount savingsAccount;
 

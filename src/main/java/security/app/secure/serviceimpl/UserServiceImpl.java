@@ -11,6 +11,7 @@ import security.app.secure.exception.ResourceNotFoundException;
 import security.app.secure.repository.RoleRepository;
 import security.app.secure.repository.UserRepository;
 import security.app.secure.service.UserService;
+import security.app.secure.tdto.UserDto;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -72,9 +73,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto findByUserDtoId(long id) {
+        return userRepository.findByUserDtoId(id);
+    }
+
+    @Override
     public List<User> getAllUser() {
 
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<UserDto> findByUserDto() {
+        return userRepository.findByUserDto();
     }
 
     @Override
