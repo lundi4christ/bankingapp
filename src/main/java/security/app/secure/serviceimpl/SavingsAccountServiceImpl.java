@@ -30,7 +30,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
         List<SavingsTransaction> savetranslist = new ArrayList<>();
 
         SavingsTransaction saveTrans = new SavingsTransaction(date, "Transaction", getaccount.getAccount_balance(),
-                getaccount.getAccount_balance(), "Processed", "Deposited");
+                getaccount.getAccount_balance(), "Processed", depositamt + " - " + "Deposited");
         saveTrans.setSavingsAccount(getaccount);
         savetranslist.add(saveTrans);
         getaccount.setSavetransitems(savetranslist);
@@ -50,8 +50,8 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
         List<SavingsTransaction> savetranslist = new ArrayList<>();
 
-        SavingsTransaction saveTrans = new SavingsTransaction(date, "transaction", getaccount.getAccount_balance(),
-                getaccount.getAccount_balance(), "processed", "debited");
+        SavingsTransaction saveTrans = new SavingsTransaction(date, "Transaction", getaccount.getAccount_balance(),
+                getaccount.getAccount_balance(), "processed", debitamt + " - " + "debited");
         saveTrans.setSavingsAccount(getaccount);
         savetranslist.add(saveTrans);
         getaccount.setSavetransitems(savetranslist);
@@ -72,8 +72,8 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
         List<SavingsTransaction> savetranslist = new ArrayList<>();
 
-        SavingsTransaction saveTrans = new SavingsTransaction(date, "transaction", debitamt,
-                getdebitaccount.getAccount_balance(), "processed", "debited");
+        SavingsTransaction saveTrans = new SavingsTransaction(date, "Transaction", debitamt,
+                getdebitaccount.getAccount_balance(), "processed", debitamt + " - " + "debited");
         saveTrans.setSavingsAccount(getdebitaccount);
         savetranslist.add(saveTrans);
         getdebitaccount.setSavetransitems(savetranslist);
@@ -88,8 +88,8 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
         List<SavingsTransaction> savetranslists = new ArrayList<>();
 
-        SavingsTransaction saveTranss = new SavingsTransaction(dates, "transaction", debitamt,
-                getdepositaccount.getAccount_balance(), "processed", "deposited");
+        SavingsTransaction saveTranss = new SavingsTransaction(dates, "Transaction", debitamt,
+                getdepositaccount.getAccount_balance(), "processed", debitamt + " - " + "deposited");
         saveTranss.setSavingsAccount(getdepositaccount);
         savetranslist.add(saveTranss);
         getdepositaccount.setSavetransitems(savetranslists);

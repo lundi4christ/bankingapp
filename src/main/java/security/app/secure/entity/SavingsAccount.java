@@ -34,7 +34,7 @@ public class SavingsAccount {
     //@JoinColumn(name = "save_trans_id")
     private List<SavingsTransaction> savetransitems;
 
-
+// to remove recorsive error pointing to .String
    /* @Override
     public String toString() {
         return "SavingsAccount{" +

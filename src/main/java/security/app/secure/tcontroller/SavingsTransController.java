@@ -45,6 +45,7 @@ public class SavingsTransController {
     @GetMapping("/balance/{id}")
     public ResponseEntity<?> balance (@PathVariable long id) {
         savingsAccountService.checkbalance(id);
+
         return new ResponseEntity<>("this is the balance", HttpStatus.OK);
     }
 
